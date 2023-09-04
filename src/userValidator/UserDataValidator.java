@@ -13,6 +13,52 @@ public class UserDataValidator {
 		// instantiating these readers (e.g. file not found, I/O exception, etc.), so
 		// just print the error to the console
 		
+		try {
+			BufferedReader data = new BufferedReader(new FileReader("user_data.txt"));
+			BufferedWriter validWriter = new BufferedWriter(new FileWriter("valid_user.txt"));
+			BufferedWriter errorWriter = new BufferedWriter(new FileWriter("faulty_user.txt")); 
+			
+				String info;
+				
+				while ((info = data.readLine()) != null) {
+					try {
+						String[] infoArray = info.split(",");
+						String name;
+						String email;
+						int age;
+						
+						if (infoArray.length != 3) {
+							throw new IllegalArgumentException("Missing data");
+						} else {
+							name = infoArray[0].trim();
+							email = infoArray[1].trim();
+							age = Integer.parseInt(infoArray[2].trim());
+						}
+						
+						if (age <= 0) {
+							throw new IllegalArgumentException("Invalid Age");
+						}
+						
+						validWriter.write(info + "\n");
+					} catch (Exception e) {
+						System.out.println("Error:" + e);
+						errorWriter.write(info + " | Error: " + e + "\n");
+					}
+				}
+				
+				data.close();
+				validWriter.close();
+				errorWriter.close();
+				
+			} catch (Exception e) {
+				System.out.println("Theres An Error");
+			}
+			 
+			
+			
+			
+			
+		
 		
 			// Run a while loop that iterates through each line of the file
 
